@@ -4,7 +4,7 @@ import Button from '../../components/Button';
 import Link from 'next/link';
 import { ChevronLeftIcon } from 'lucide-react';
 import { useActionState } from 'react';
-import { handleSignup } from '../../api/auth';
+import { handleSignup } from '../api/auth';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
