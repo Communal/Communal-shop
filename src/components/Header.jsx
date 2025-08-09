@@ -1,10 +1,9 @@
 "use client";
-
 import { useState } from "react";
 import { XIcon, UserIcon, ShoppingCartIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import SidebarDrawer from "./SidebarDrawer";
-import { useUser } from "../api/useUser";
+import { useUser } from "../app/api/useUser";
 import { useCartStore } from "../store/cart";
 
 export default function Header() {
