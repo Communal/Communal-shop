@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import User from '../../../db/schema/User';
-import dbConnect from '../../../db/dbConnect';
+import dbConnect from '../../../config/db';
 
 export async function POST(request) {
   await dbConnect();
