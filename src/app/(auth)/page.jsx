@@ -11,39 +11,39 @@ import {
 const categories = [
   {
     name: "Facebook",
-    src: "/img/facebook@3x 1.png",
+    src: "/icons/facebook@3x 1.png",
   },
   {
     name: "Instagram",
-    src: "/img/instagram@512px 1.png",
+    src: "/icons/instagram@512px 1.png",
   },
   {
     name: "Twitter",
-    src: "/img/twitter@512px 1.png",
+    src: "/icons/twitter@512px 1.png",
   },
   {
     name: "LinkedIn",
-    src: "/img/linkedin@3x 1.png",
+    src: "/icons/linkedin@3x 1.png",
   },
   {
     name: "Tiktok",
-    src: "/img/tik_tok@512px 1.png",
+    src: "/icons/tik_tok@512px 1.png",
   },
   {
     name: "Google Voice",
-    src: "/img/google-voice8556 1.png",
+    src: "/icons/google-voice8556 1.png",
   },
   {
     name: "Pia VPN",
-    src: "/img/images 1.png",
+    src: "/icons/images 1.png",
   },
   {
     name: "Express Vpn",
-    src: "/img/download 1.png",
+    src: "/icons/download 1.png",
   },
   {
     name: "Netflix Logs",
-    src: "/img/netflix-mobile-application-logo-free-png 1.png",
+    src: "/icons/netflix-mobile-application-logo-free-png 1.png",
   },
 ];
 
