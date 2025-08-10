@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import User from '../../../db/schema/User';
+import dbConnect from '../../../db/dbConnect';
 
 export async function POST(request) {
+  await dbConnect();
   const { id, email } = await request.json();
   if (!id && !email) {
     return NextResponse.json({ error: 'id or email required' }, { status: 400 });

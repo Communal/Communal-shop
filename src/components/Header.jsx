@@ -20,7 +20,7 @@ export default function Header() {
         <SidebarDrawer />
         <div className="flex-1" />
         <Link
-          href={user ? "/account" : "/login"}
+          href={user ? "/profile" : "/login"}
           className="flex items-center gap-1 text-background text-lg font-medium"
         >
           <UserIcon className="size-6" />
