@@ -5,75 +5,75 @@ import Company from "./../db/schema/Company.js"; // for ref lookup
 
 const MONGO_URI =
   process.env.MONGODB_URL ||
-  "mongodb://localhost:27017/communal-shop";
+  "mongodb+srv://communalshop0:OJ22Qnl6tUMpqizW@communal-shop.3pw3tej.mongodb.net/";
 
 async function run() {
   await mongoose.connect(MONGO_URI);
 
   // Find the company to link (example: 'Company A')
-  const company = await Company.findOne({ name: "Twitter" });
+  const company = await Company.findOne({ name: "Instagram" });
   if (!company) {
     console.error("Company not found. Please create the company first.");
     process.exit(1);
   }
 
-  // const categories = [
-  //   {
-  //     name: "Male USA Facebook Dating (location)",
-  //     company: company._id
-  //   },
-  //   {
-  //     name: "Female USA Facebook Dating (location)",
-  //     company: company._id
-  //   },
-  //   {
-  //     name: "Random Facebook mostly Asian",
-  //     company: company._id
-  //   },
-  //   {
-  //     name: "Normal USA Facebook Non Dating",
-  //     company: company._id
-  //   },
-  //   {
-  //     name: "Code 6 USA Facebook Non Dating",
-  //     company: company._id
-  //   },
-  //   {
-  //     name: "Code 7 USA Facebook Non Dating",
-  //     company: company._id
-  //   },
-  //   {
-  //     name: "Code 8 USA Facebook Non Dating",
-  //     company: company._id
-  //   },
-  //   {
-  //     name: "Europe Facebook",
-  //     company: company._id
-  //   },
-  //   {
-  //     name: "Old Nigeria Facebook",
-  //     company: company._id
-  //   },
-  // ];
-
   const categories = [
     {
-      name: "500+ Followers, old Foreign Twitter (x) accounts $12",
+      name: "Male USA Instagram Dating (location)",
       company: company._id,
     },
     {
-      name: "1000+ Followers, old foreign Twitter (x) account $16",
+      name: "Female USA Instagram Dating (location)",
       company: company._id,
     },
     {
-      name: "30+ Followers, old & New Foreign Twitter (x) accounts $3",
+      name: "Random Instagram mostly Asian",
       company: company._id,
     },
     {
-      name: "100+ Followers, old & New foreign Twitter (x) account $5",
+      name: "Normal USA Instagram Non Dating",
+      company: company._id,
+    },
+    {
+      name: "Code 6 USA Instagram Non Dating",
+      company: company._id,
+    },
+    {
+      name: "Code 7 USA Instagram Non Dating",
+      company: company._id,
+    },
+    {
+      name: "Code 8 USA Instagram Non Dating",
+      company: company._id,
+    },
+    {
+      name: "Europe Instagram",
+      company: company._id,
+    },
+    {
+      name: "Old Nigeria Instagram",
       company: company._id,
     },
   ];
+
+  // const categories = [
+  //   {
+  //     name: "500+ Followers, old Foreign Twitter (x) accounts $12",
+  //     company: company._id,
+  //   },
+  //   {
+  //     name: "1000+ Followers, old foreign Twitter (x) account $16",
+  //     company: company._id,
+  //   },
+  //   {
+  //     name: "30+ Followers, old & New Foreign Twitter (x) accounts $3",
+  //     company: company._id,
+  //   },
+  //   {
+  //     name: "100+ Followers, old & New foreign Twitter (x) account $5",
+  //     company: company._id,
+  //   },
+  // ];
 
   await Category.insertMany(categories);
   console.log("Categories populated.");
