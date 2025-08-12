@@ -10,38 +10,52 @@ import {
 
 const categories = [
   {
+    id: "689a6ee1022f2a1bba30bc23",
     name: "Facebook",
     src: "/icons/facebook@3x 1.png",
   },
   {
+    id: "689a6ee2022f2a1bba30bc27",
     name: "Instagram",
     src: "/icons/instagram@512px 1.png",
   },
   {
+    id: "689a6ee2022f2a1bba30bc2a",
     name: "Twitter",
     src: "/icons/twitter@512px 1.png",
   },
   {
+    id: "689a6ee2022f2a1bba30bc2d",
+
     name: "LinkedIn",
     src: "/icons/linkedin@3x 1.png",
   },
   {
+    id: "689a6ee2022f2a1bba30bc30",
+
     name: "Tiktok",
     src: "/icons/tik_tok@512px 1.png",
   },
   {
+    id: "689a6ee2022f2a1bba30bc33",
+
     name: "Google Voice",
     src: "/icons/google-voice8556 1.png",
   },
   {
+    id: "689a6ee2022f2a1bba30bc36",
+
     name: "Pia VPN",
     src: "/icons/images 1.png",
   },
   {
+    id: "689a6ee2022f2a1bba30bc39",
+
     name: "Express Vpn",
     src: "/icons/download 1.png",
   },
   {
+    id: "689a6ee2022f2a1bba30bc3c",
     name: "Netflix Logs",
     src: "/icons/netflix-mobile-application-logo-free-png 1.png",
   },
@@ -59,8 +73,8 @@ export default function Home() {
         </div>
         {categories.map((c) => (
           <Link
-            key={c.name}
-            href={`/category/${c.name.toLowerCase().replace(/\s+/g, "-")}`}
+            key={c.id}
+            href={`/category/${c.id}`}
             className="flex items-center justify-between gap-2 bg-foreground text-background transition p-3 border border-neutral-200 shadow-sm"
           >
             <div className="flex items-center gap-2">

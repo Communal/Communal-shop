@@ -8,6 +8,7 @@ const Button = React.forwardRef(
       className,
       disabled,
       children,
+      onClick,
       variant = "default",
       size = "base",
       ...props
@@ -19,6 +20,7 @@ const Button = React.forwardRef(
         ref={ref}
         disabled={disabled}
         {...props}
+        onClick={onClick}
         className={cn("button relative text-sm", className, variant, size)}
       >
         {children}

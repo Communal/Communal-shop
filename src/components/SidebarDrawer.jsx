@@ -10,12 +10,18 @@ import {
   HelpCircle as FaqIcon,
   ChevronRightIcon,
   SendIcon,
+  BadgeDollarSignIcon,
 } from "lucide-react";
 import Button from "./Button";
 import Link from "next/link";
+import ConfirmDialog from "./DialogBox";
+import { useUser } from "../app/api/useUser";
 
 export default function SidebarDrawer() {
+  const { user } = useUser();
   const [open, setOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   return (
     <>
@@ -47,19 +53,39 @@ export default function SidebarDrawer() {
         </button>
 
         <div className="space-y-5">
-          <h2 className="text-2xl font-bold mt-5">Communal One</h2>
+          <h2 className="text-2xl font-bold mt-5">
+            {user?.firstName
+              ? `Welcome, ${user.firstName}`
+              : "Please Sign In Below"}
+          </h2>
 
-          <div className="bg-[#ff7f1f] rounded-xl shadow-md overflow-hidden">
+          <div className="rounded-xl shadow-md overflow-hidden">
             <div className="flex items-center justify-between mb-2 bg-background-2 p-2">
               <span className="font-semibold text-lg text-foreground">
                 Account Balance
               </span>
-              <Button size="sm" style={{ boxShadow: "0 2px 4px 0 #e97a00" }}>
-                Add Funds
+            </div>
+            <div className="text-3xl font-bold px-5 py-1.5">
+              {user
+                ? `₦ ${Number(user.balance?.$numberDecimal || 0)}`
+                : "Please sign in"}
+            </div>
+            <div className="flex items-center justify-between px-5 py-4">
+              <Button
+                size="sm"
+                className="text-foreground bg-background"
+                style={{ boxShadow: "0 2px 4px 0 #e97a00" }}
+              >
+                Add Money
+              </Button>
+              <Button
+                size="sm"
+                className="text-foreground bg-background"
+                style={{ boxShadow: "0 2px 4px 0 #e97a00" }}
+              >
+                Withdraw
               </Button>
             </div>
-
-            <div className="text-3xl font-bold px-5 py-1.5">$5,000</div>
           </div>
         </div>
 
@@ -75,18 +101,56 @@ export default function SidebarDrawer() {
             icon={<HistoryIcon className="size-6" />}
             label="Purchase History"
           />
+          <SidebarLink
+            icon={<BadgeDollarSignIcon className="size-6" />}
+            label="Transaction History"
+          />
           <SidebarLink icon={<FaqIcon className="size-6" />} label="FAQs" />
         </nav>
 
         {/* Contact & Logout */}
         <div>
+          {user ? (
+            <Button
+              onClick={() => setShowLogoutDialog(true)}
+              className="w-full !bg-background !text-foreground !rounded-xl !text-xl !font-bold !py-3 !shadow-md !border-0 hover:opacity-90 mt-5"
+            >
+              Logout
+            </Button>
+          ) : (
+            <Link
+              className="w-full button relative text-sm !bg-background !text-foreground !rounded-xl !font-bold !py-3 !shadow-md !border-0 hover:opacity-90 mt-5"
+              href={"/login"}
+            >
+              Sign in
+            </Link>
+          )}
+          <ConfirmDialog
+            isOpen={showLogoutDialog}
+            body="Are you sure you want to log out?"
+            onClose={() => setShowLogoutDialog(false)}
+            buttons={[
+              {
+                label: "Cancel",
+                onClick: () => setShowLogoutDialog(false),
+                variant: "secondary",
+              },
+              {
+                label: "Log Out",
+                onClick: () => {
+                  // Your logout logic here (e.g., remove token, redirect)
+                  localStorage.removeItem("token");
+                  window.location.href = "/login";
+                },
+                variant: "danger",
+              },
+            ]}
+          />
+
           <Link href="#" className="flex items-center gap-3">
             <span className="font-semibold">Contact Us :</span>
             <SendIcon className="size-5" />
           </Link>
-          <Button className="w-full !bg-background !text-foreground !rounded-xl !text-xl !font-bold !py-3 !shadow-md !border-0 hover:opacity-90 mt-5">
-            Log Out
-          </Button>
         </div>
       </aside>
     </>
@@ -96,11 +160,16 @@ export default function SidebarDrawer() {
 function SidebarLink({ icon, label }) {
   return (
     <button className="w-full flex items-center justify-between hover:bg-foreground/80 text-white font-semibold text-lg py-4 rounded-none border-b-2 border-white focus:outline-none transition-colors">
-      <span className="flex items-center gap-3">
-        {icon}
-        {label}
-      </span>
-      <ChevronRightIcon className="size-6" />
+      <Link
+        href={`/${label.toLowerCase().replace(/\s+/g, "-")}`}
+        className="w-full flex items-center gap-3"
+      >
+        <span className="flex items-center gap-3">
+          {icon}
+          {label}
+        </span>
+        <ChevronRightIcon className="size-6" />
+      </Link>
     </button>
   );
 }

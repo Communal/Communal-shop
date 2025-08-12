@@ -25,7 +25,7 @@ export default function Header() {
         >
           <UserIcon className="size-6" />
           <span className="font-medium text-sm">
-            {!user ? "Login" : "Account"}
+            {!user ? "Login" : user?.firstName}
           </span>
         </Link>
         {/* Cart */}
