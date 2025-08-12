@@ -112,7 +112,7 @@ const categories2 = [
 
 export default function Home() {
   const categories =
-    process.env.NODE_ENV === "development" ? category1 : category2;
+    process.env.NODE_ENV === "development" ? categories1 : categories2;
   return (
     <main className="flex-1 flex flex-col items-center px-2 py-6">
       <div className="w-full max-w-2xl rounded-xl overflow-hidden bg-background-2 shadow-md mb-8">
