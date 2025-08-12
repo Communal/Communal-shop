@@ -8,7 +8,7 @@ import {
   LibraryBig,
 } from "lucide-react";
 
-const categories = [
+const categories1 = [
   {
     id: "689a6ee1022f2a1bba30bc23",
     name: "Facebook",
@@ -26,7 +26,6 @@ const categories = [
   },
   {
     id: "689a6ee2022f2a1bba30bc2d",
-
     name: "LinkedIn",
     src: "/icons/linkedin@3x 1.png",
   },
@@ -50,7 +49,6 @@ const categories = [
   },
   {
     id: "689a6ee2022f2a1bba30bc39",
-
     name: "Express Vpn",
     src: "/icons/download 1.png",
   },
@@ -61,7 +59,60 @@ const categories = [
   },
 ];
 
+const categories2 = [
+  {
+    id: "689a6f27a0f7bfb9f65b268f",
+    name: "Facebook",
+    src: "/icons/facebook@3x 1.png",
+  },
+  {
+    id: "689a6f28a0f7bfb9f65b2692",
+    name: "Instagram",
+    src: "/icons/instagram@512px 1.png",
+  },
+  {
+    id: "689a6f28a0f7bfb9f65b2695",
+    name: "Twitter",
+    src: "/icons/twitter@512px 1.png",
+  },
+  {
+    id: "689a6f29a0f7bfb9f65b2698",
+    name: "LinkedIn",
+    src: "/icons/linkedin@3x 1.png",
+  },
+  {
+    id: "689a6f29a0f7bfb9f65b269b",
+
+    name: "Tiktok",
+    src: "/icons/tik_tok@512px 1.png",
+  },
+  {
+    id: "689a6f2aa0f7bfb9f65b269e",
+
+    name: "Google Voice",
+    src: "/icons/google-voice8556 1.png",
+  },
+  {
+    id: "689a6f2aa0f7bfb9f65b26a1",
+
+    name: "Pia VPN",
+    src: "/icons/images 1.png",
+  },
+  {
+    id: "689a6f2aa0f7bfb9f65b26a4",
+    name: "Express Vpn",
+    src: "/icons/download 1.png",
+  },
+  {
+    id: "689a6f2ba0f7bfb9f65b26a7",
+    name: "Netflix Logs",
+    src: "/icons/netflix-mobile-application-logo-free-png 1.png",
+  },
+];
+
 export default function Home() {
+  const categories =
+    process.env.NODE_ENV === "development" ? category1 : category2;
   return (
     <main className="flex-1 flex flex-col items-center px-2 py-6">
       <div className="w-full max-w-2xl rounded-xl overflow-hidden bg-background-2 shadow-md mb-8">
