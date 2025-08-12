@@ -1,32 +1,18 @@
+// store/cart.js
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 export const useCartStore = create(
   persist(
     (set, get) => ({
-      items: [],
-      addItem: (item) => {
-        const existing = get().items.find((i) => i.id === item.id);
-        if (existing) {
-          set({
-            items: get().items.map((i) =>
-              i.id === item.id
-                ? { ...i, quantity: i.quantity + item.quantity }
-                : i
-            ),
-          });
-        } else {
-          set({ items: [...get().items, item] });
+      items: [], // now just IDs
+      addItem: (id) => {
+        if (!get().items.includes(id)) {
+          set({ items: [...get().items, id] });
         }
       },
       removeItem: (id) =>
-        set({ items: get().items.filter((i) => i.id !== id) }),
-      updateQuantity: (id, quantity) =>
-        set({
-          items: get().items.map((i) => 
-            i.id === id ? { ...i, quantity } : i
-          ),
-        }),
+        set({ items: get().items.filter((itemId) => itemId !== id) }),
       clearCart: () => set({ items: [] }),
     }),
     {
