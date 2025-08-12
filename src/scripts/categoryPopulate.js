@@ -5,7 +5,7 @@ import Company from "./../db/schema/Company.js"; // for ref lookup
 
 const MONGO_URI =
   process.env.MONGODB_URL ||
-  "mongodb+srv://communalshop0:OJ22Qnl6tUMpqizW@communal-shop.3pw3tej.mongodb.net/";
+  "";
 
 async function run() {
   await mongoose.connect(MONGO_URI);
