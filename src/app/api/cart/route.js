@@ -1,22 +1,20 @@
-// app/api/cart/route.js
-import connectDB from "../../../config/db";
-import Product from "../../../db/schema/Product";
+import dbConnect from "@/config/db";
+import Product from "@/db/schema/Product";
 
-export async function POST(req) {
+export async function GET() {
   try {
-    const { ids } = await req.json();
+    await dbConnect();
+    const products = await Product.find().populate("category").lean();
 
-    if (!Array.isArray(ids) || ids.length === 0) {
-      return new Response(JSON.stringify([]), { status: 200 });
-    }
-
-    await connectDB();
-
-    const products = await Product.find({ _id: { $in: ids } });
-
-    return new Response(JSON.stringify(products), { status: 200 });
+    return new Response(JSON.stringify(products), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
-    console.error(error);
-    return new Response(JSON.stringify({ error: "Failed to fetch cart items" }), { status: 500 });
+    console.error("Error fetching products:", error);
+    return new Response(
+      JSON.stringify({ message: "Internal Server Error" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 }
