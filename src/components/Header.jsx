@@ -20,12 +20,12 @@ export default function Header() {
         <SidebarDrawer />
         <div className="flex-1" />
         <Link
-          href={user ? "/profile" : "/login"}
+          href={user ? "/profile" : "/login" ?? "/login"}
           className="flex items-center gap-1 text-background text-lg font-medium"
         >
           <UserIcon className="size-6" />
           <span className="font-medium text-sm">
-            {!user ? "Login" : user?.firstName}
+            {!user ? "Login" : user?.firstName || "Profile"}
           </span>
         </Link>
         {/* Cart */}
