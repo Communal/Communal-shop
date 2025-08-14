@@ -1,33 +1,22 @@
 "use client";
-import React from "react";
 import Button from "./Button";
 import { useCartStore } from "../store/cart";
 
 const ProductCard = ({ product }) => {
-  const { _id, name, icon, info, stock, price } = product;
-  const id = _id; // explicitly use _id from MongoDB
+  const { _id, name, icon, info, price } = product;
 
-  const addItem = useCartStore((state) => state.addItem);
-  const removeItem = useCartStore((state) => state.removeItem);
+  const addToCart = useCartStore((state) => state.addToCart);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
   const items = useCartStore((state) => state.items);
 
-  // DEBUG LOGS
-  console.log("Rendering ProductCard for:", name);
-  console.log("Product ID:", id);
-  console.log("Cart Items:", items);
-  console.log(
-    "Is in cart:",
-    items.some((i) => i.id === id)
-  );
-
-  const isInCart = items.some((i) => i.id === id);
+  const isInCart = items.some((item) => item._id === _id);
 
   const handleAddToCart = () => {
-    addItem({ id });
+    addToCart(product);
   };
 
   const handleRemoveFromCart = () => {
-    removeItem(id);
+    removeFromCart(_id);
   };
 
   const buyNow = () => {
@@ -44,7 +33,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       <div className="bg-foreground text-black px-3 py-3 text-base font-medium rounded-t-none rounded-b-none">
-        {product?.info}
+        {info}
       </div>
 
       <div className="bg-foreground px-3 py-3 flex flex-col gap-2">
