@@ -1,23 +1,42 @@
-// store/cart.js
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+// stores/cartStore.js
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export const useCartStore = create(
   persist(
     (set, get) => ({
-      items: [], // now just IDs
-      addItem: (id) => {
-        if (!get().items.includes(id)) {
-          set({ items: [...get().items, id] });
+      items: [],
+
+      addToCart: (product) => {
+        const existing = get().items.find((item) => item._id === product._id);
+        if (!existing) {
+          set({ items: [...get().items, { ...product, quantity: 1 }] });
+        } else {
+          set({
+            items: get().items.map((item) =>
+              item._id === product._id
+                ? { ...item, quantity: item.quantity + 1 }
+                : item
+            ),
+          });
         }
       },
-      removeItem: (id) =>
-        set({ items: get().items.filter((itemId) => itemId !== id) }),
+
+      removeFromCart: (id) => {
+        set({ items: get().items.filter((item) => item._id !== id) });
+      },
+
       clearCart: () => set({ items: [] }),
+
+      getTotalItems: () =>
+        get().items.reduce((total, item) => total + item.quantity, 0),
+
+      getTotalAmount: () =>
+        get().items.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        ),
     }),
-    {
-      name: 'cart-storage',
-      storage: createJSONStorage(() => localStorage),
-    }
+    { name: "cart-storage" }
   )
 );

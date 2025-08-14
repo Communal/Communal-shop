@@ -91,21 +91,32 @@ export default function SidebarDrawer() {
 
         {/* Navigation */}
         <nav className="flex-1 flex flex-col gap-0.5 mt-10">
-          <SidebarLink icon={<HomeIcon className="size-6" />} label="Home" />
-          <SidebarLink icon={<UserIcon className="size-6" />} label="Profile" />
           <SidebarLink
-            icon={<OrdersIcon className="size-6" />}
-            label="My Orders"
+            href="/"
+            icon={<HomeIcon className="size-6" />}
+            label="Home"
           />
           <SidebarLink
+            href="/profile"
+            icon={<UserIcon className="size-6" />}
+            label="Profile"
+          />
+          <SidebarLink
+            href="/cart"
+            icon={<OrdersIcon className="size-6" />}
+            label="Cart"
+          />
+          <SidebarLink
+            href="/purchase-history"
             icon={<HistoryIcon className="size-6" />}
             label="Purchase History"
           />
           <SidebarLink
+            href="/transaction-history"
             icon={<BadgeDollarSignIcon className="size-6" />}
             label="Transaction History"
           />
-          <SidebarLink icon={<FaqIcon className="size-6" />} label="FAQs" />
+          <SidebarLink href="/faq" icon={<FaqIcon className="size-6" />} label="FAQs" />
         </nav>
 
         {/* Contact & Logout */}
@@ -157,13 +168,10 @@ export default function SidebarDrawer() {
   );
 }
 
-function SidebarLink({ icon, label }) {
+function SidebarLink({ icon, label, href }) {
   return (
     <button className="w-full flex items-center justify-between hover:bg-foreground/80 text-white font-semibold text-lg py-4 rounded-none border-b-2 border-white focus:outline-none transition-colors">
-      <Link
-        href={`/${label.toLowerCase().replace(/\s+/g, "-")}`}
-        className="w-full flex items-center gap-3"
-      >
+      <Link href={href} className="w-full flex items-center gap-3">
         <span className="flex items-center gap-3">
           {icon}
           {label}

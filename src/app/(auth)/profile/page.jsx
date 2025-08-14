@@ -1,12 +1,15 @@
 "use client";
 import Link from "next/link";
+import { useUserStore } from "@/store/userStore";
 import { useUser } from "../../../app/api/useUser";
 import { Input } from "../../../components/Input";
 
 export default function ProfilePage() {
-  const { user, isLoading } = useUser();
+    const { user, loading, error, fetchUser, userRole, balance } = useUserStore();
 
-  if (isLoading) {
+  // const { user, isLoading } = useUser();
+
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         Loading...

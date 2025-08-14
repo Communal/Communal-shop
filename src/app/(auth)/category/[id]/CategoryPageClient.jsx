@@ -68,11 +68,12 @@ export default function CategoryPageClient({ companyId }) {
       <BackHome />
 
       <Select
-        label="Category"
+        // label="Category"
         value={selectedCategory}
         onChange={(val) => setSelectedCategory(val)}
         placeholder="Select a category"
         options={options}
+        className="pt-4"
       />
 
       {categories.length === 0 ? (
