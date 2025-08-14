@@ -8,6 +8,7 @@ import { handleLogin } from "../api/auth";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import BackHome from "../../components/Home";
+import { useUserStore } from "../../store/userStore"; // ✅ import the store
 
 const initialState = {
   email: process.env.NODE_ENV === "development" ? "test@example.com" : "",
@@ -15,6 +16,7 @@ const initialState = {
   error: "",
   success: "",
   token: "",
+  user: null,
 };
 
 export default function LoginPage() {
@@ -24,15 +26,25 @@ export default function LoginPage() {
   );
 
   const router = useRouter();
+  const setUser = useUserStore((s) => s.setUser); // ✅ get setter
 
   useEffect(() => {
     if (state?.success) {
       if (state.token) {
         localStorage.setItem("token", state.token);
       }
+
+      if (state.user) {
+        // ✅ store only id + token in zustand
+        setUser({
+          id: state.user.id,
+          token: state.token,
+        });
+      }
+
       router.push("/");
     }
-  }, [state?.success, router]);
+  }, [state?.success, state?.token, state?.user, router, setUser]);
 
   return (
     <div className="flex flex-col justify-center bg-background px-4 py-8">
