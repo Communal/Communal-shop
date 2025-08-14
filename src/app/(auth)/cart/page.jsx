@@ -1,52 +1,49 @@
 "use client";
-import { useEffect, useState } from "react";
-import BackHome from "../../../components/Home";
-import CartProductCard from "../../../components/CartProductCard";
-import { useCartStore } from "../../../store/cart";
+import CartSummary from "@/components/CartSummary";
+import { useCartStore } from "@/store/cart";
 
 export default function CartPage() {
-  const cartItems = useCartStore((state) => state.items); // IDs in cart
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { items, removeFromCart, clearCart, getTotalItems, getTotalAmount } =
+    useCartStore();
 
-  useEffect(() => {
-    if (cartItems.length > 0) {
-      // Send the IDs in the cart to your API
-      fetch("/api/cart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ids: cartItems.map((item) => item.id) }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setProducts(data); // products from DB
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error(err);
-          setLoading(false);
-        });
-    } else {
-      setProducts([]);
-      setLoading(false);
-    }
-  }, [cartItems]);
+  const proceedToCheckout = () => {};
 
   return (
-    <div className="min-h-screen bg-[#fffaf0] flex flex-col">
-      <BackHome />
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">🛒 Your Cart</h1>
 
-      <main className="flex-1 px-2 py-6 flex flex-col items-center gap-6">
-        {loading ? (
-          <p>Loading cart...</p>
-        ) : products.length > 0 ? (
-          products.map((product) => (
-            <CartProductCard key={product._id} item={product} />
-          ))
-        ) : (
-          <p>No items in cart</p>
-        )}
-      </main>
+      {items.length === 0 ? (
+        <p className="text-gray-500">Your cart is empty.</p>
+      ) : (
+        <div className="space-y-4">
+          {items.map((item) => (
+            <div
+              key={item._id}
+              className="flex justify-between items-center border-b pb-2"
+            >
+              <div>
+                <h2 className="font-semibold">{item.name}</h2>
+                <p>
+                  ₦{item.price.toLocaleString()} × {item.quantity}
+                </p>
+              </div>
+              <button
+                onClick={() => removeFromCart(item._id)}
+                className="text-red-500 hover:underline"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+
+          {/* Summary Component */}
+          <CartSummary
+            onClick={proceedToCheckout}
+            totalAmount={getTotalAmount()}
+            totalItems={getTotalItems()}
+          />
+        </div>
+      )}
     </div>
   );
 }
