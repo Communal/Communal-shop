@@ -1,37 +1,49 @@
-// components/CartProductCard.jsx
 "use client";
-import { useCartStore } from "@/store/cart";
 
-export default function CartProductCard({ item }) {
-  const removeItem = useCartStore((state) => state.removeItem);
+import { Trash2 } from "lucide-react";
+import Button from "@/components/Button";
 
+export default function CartProductCard({ item, removeItem }) {
   return (
-    <div className="bg-white rounded-lg shadow p-4 w-full max-w-md">
-      {/* Top Section */}
-      <div className="flex items-center gap-2 mb-2">
-        <span className="font-semibold text-orange-500">
-          {item?.name || "Product"}
-        </span>
+    <div className="w-full max-w-2xl rounded-2xl bg-background-2 shadow-md flex flex-col gap-0.5 mb-6">
+      {/* Header */}
+      <div className="flex text-base items-center justify-between px-3 py-2 pb-1">
+        <div className="flex items-center gap-2">
+          {/* Optional: if you have an icon field for the cart items */}
+          {item?.icon}
+          <span className="text-md font-bold text-foreground">
+            {item?.name || "Product"}
+          </span>
+        </div>
       </div>
 
-      {/* Description */}
-      <p className="text-sm text-gray-700 mb-3">{item?.name}</p>
-
-      {/* Price Row */}
-      <div className="flex justify-between items-center border-t pt-2">
-        <span className="font-medium">Price in USD:</span>
-        <span className="bg-orange-500 text-white px-3 py-1 rounded">
-          ${item?.price}
-        </span>
+      {/* Info Section */}
+      <div className="bg-foreground text-white px-3 py-3 text-xs font-medium rounded-t-none rounded-b-none">
+        {item?.info}
       </div>
 
-      {/* Remove Button */}
-      <button
-        onClick={() => removeItem(item._id)}
-        className="mt-3 bg-red-500 text-white px-4 py-1 rounded flex items-center gap-1"
-      >
-        🗑 Remove
-      </button>
+      {/* Price Section */}
+      <div className="bg-foreground px-2 py-2 text-base flex flex-col gap-2">
+        <div className="flex items-center justify-between mt-1">
+          <span className="font-semibold  text-neutral-100">
+            Price in USD :
+          </span>
+          <span className="bg-[#e6e6e6] text-foreground font-bold text-lg px-6 py-1 rounded-xl border-2 border-white">
+            ${item?.price}
+          </span>
+        </div>
+      </div>
+
+      {/* Action Section */}
+      <div className="flex items-center justify-between px-3 py-2">
+        <Button
+          onClick={removeItem}
+          className="bg-foreground text-white flex items-center gap-1"
+        >
+          <Trash2 />
+          Remove
+        </Button>
+      </div>
     </div>
   );
 }
