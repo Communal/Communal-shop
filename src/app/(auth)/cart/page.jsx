@@ -2,19 +2,21 @@
 import CartSummary from "@/components/CartSummary";
 import CartCard from "@/components/CartCard";
 import { useCartStore } from "@/store/cart";
+import BackHome from "@/components/Home";
 
 export default function CartPage() {
   const { items, removeFromCart, clearCart, getTotalItems, getTotalAmount } =
     useCartStore();
 
-  const proceedToCheckout = () => {};
+  const proceedToCheckout = () => { };
 
   return (
-    <div className="p-2">
-      <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
+    <div className="w-full p-1">
+      <BackHome />
+      <h1 className="text-2xl font-bold mb-4 text-center">Your Cart</h1>
 
       {items.length === 0 ? (
-        <p className="text-gray-500">Your cart is empty.</p>
+        <p className="text-gray-500 text-center">Your cart is empty.</p>
       ) : (
         <div className="space-y-4">
           {items.map((item) => (
