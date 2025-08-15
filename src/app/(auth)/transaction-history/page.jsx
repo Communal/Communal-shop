@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Select } from "@/components/Select";
+import BackHome from "@/components/Home";
 
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState([]);
@@ -23,11 +24,12 @@ export default function TransactionsPage() {
   }, [filters]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bacground">
+      <BackHome/>
       {/* Header Section */}
-      <div className="sticky top-0 bg-white p-3 shadow-sm z-10">
-        <h1 className="text-xl font-bold text-gray-800">Transactions</h1>
-        
+      <div className="sticky top-0 bg-background p-3 shadow-sm z-10">
+        <h1 className="text-xl font-bold text-gray-800 text-center">Transactions</h1>
+
         {/* Filters - Full width with better spacing */}
         <div className="mt-3 space-y-2">
           <Select
@@ -68,10 +70,10 @@ export default function TransactionsPage() {
       </div>
 
       {/* Transactions Table - Full width scrollable */}
-      <div className="p-3">
-        <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+      <div className="p-3 bg-background">
+        <div className="overflow-x-auto rounded-lg border border-gray-200 bg-background">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-background">
               <tr>
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Amount
