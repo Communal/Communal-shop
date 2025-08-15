@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 import Product from "./../db/schema/Product.js"; // adjust path if needed
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/communal-shop";
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://communalshop0:OJ22Qnl6tUMpqizW@communal-shop.3pw3tej.mongodb.net/";
 
 async function run() {
   await mongoose.connect(MONGO_URI);
@@ -257,17 +257,38 @@ async function run() {
 
 const products = [
       {
-        _id: new mongoose.Types.ObjectId("689b650e2c26952c09bbb88a"),
+        _id: new mongoose.Types.ObjectId(),
         name: "Test Product 1",
         price: 19.99,
-        category: "689b5f35830581f7b7488505", // Use real category ID
+        category: "689bb8939d07473879ec95c8", // Use real category ID
         info: "Test product description"
       },
       {
-        _id: new mongoose.Types.ObjectId("689b650e2c26952c09bbb88b"),
+        _id: new mongoose.Types.ObjectId(),
         name: "Test Product 2",
         price: 29.99,
-        category: "689b5f35830581f7b7488505", // Use real category ID
+        category: "689bb8939d07473879ec95c8", // Use real category ID
+        info: "Test product description"
+      },
+      {
+        _id: new mongoose.Types.ObjectId(),
+        name: "Test Product 2",
+        price: 29.99,
+        category: "689bb8939d07473879ec95c9", // Use real category ID
+        info: "Test product description"
+      },
+      {
+        _id: new mongoose.Types.ObjectId(),
+        name: "Test Product 2",
+        price: 29.99,
+        category: "689bb8939d07473879ec95c9", // Use real category ID
+        info: "Test product description"
+      },
+      {
+        _id: new mongoose.Types.ObjectId(),
+        name: "Test Product 2",
+        price: 29.99,
+        category: "689bb868ee42eb390730378b", // Use real category ID
         info: "Test product description"
       }
     ];
