@@ -5,19 +5,19 @@ import PurchaseHistory from "../db/schema/PurchaseHistory.js"; // adjust path if
 async function seed() {
   try {
     // Connect to MongoDB
-    await mongoose.connect("mongodb://localhost:27017/communal-shop", {
+    await mongoose.connect("mongodb+srv://communalshop0:OJ22Qnl6tUMpqizW@communal-shop.3pw3tej.mongodb.net/", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     console.log("✅ Connected to MongoDB");
 
     // Example user/product IDs — replace with real ones from your DB
-    const userId = "689689c871c96bea16836cff";
+    const userId = "6898ff9b394fef3ef35e47c9";
     const productIds = [
-      "689b650e2c26952c09bbb89d",
-      "689b650e2c26952c09bbb88a",
-      "689b650e2c26952c09bbb899",
-      "689b650e2c26952c09bbb89a",
+      "689d3399d5ca26cff61bf12c",
+      "689d3399d5ca26cff61bf12d",
+      "689d3399d5ca26cff61bf12e",
+      "689d3399d5ca26cff61bf12f",
     ];
 
     // Sample data
