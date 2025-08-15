@@ -1,5 +1,6 @@
 // models/PurchaseHistory.js
 import mongoose from "mongoose";
+import Product from "./Product";
 
 const PurchaseHistorySchema = new mongoose.Schema(
   {
