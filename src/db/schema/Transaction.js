@@ -14,11 +14,21 @@ const TransactionSchema = new mongoose.Schema(
       enum: ["CREDIT", "DEBIT"],
       required: true,
     },
-    description: { type: String },
+    status: {
+      type: String,
+      enum: ["SUCCESS", "FAILED"], // Needed for failed transactions
+      default: "SUCCESS",
+    },
+    description: {
+      type: String,
+      enum: ["Wallet in", "Withdrawal"], // Could be expanded
+      required: true,
+    },
   },
   {
-    timestamps: { createdAt: true, updatedAt: false }, // Only createdAt
+    timestamps: { createdAt: true, updatedAt: false },
   }
 );
 
-export default mongoose.models.Transaction || mongoose.model("Transaction", TransactionSchema);
+export default mongoose.models.Transaction ||
+  mongoose.model("Transaction", TransactionSchema);
