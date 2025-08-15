@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 import Product from "./../db/schema/Product.js"; // adjust path if needed
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://communalshop0:OJ22Qnl6tUMpqizW@communal-shop.3pw3tej.mongodb.net/";
+const MONGO_URI = process.env.MONGO_URI || "";
 
 async function run() {
   await mongoose.connect(MONGO_URI);
