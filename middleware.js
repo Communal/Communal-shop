@@ -1,32 +1,46 @@
 import { NextResponse } from "next/server";
+import { jwtVerify } from "jose";
 
-// Define protected routes (add more as needed)
-const protectedRoutes = ["/profile", "/cart", "/purchase-history", "/transaction-history"];
-
-export function middleware(request) {
-  // Check if the current path is protected
+export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // Only run for protected routes
-  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
-    // Check for token in cookies (if you use cookies)
-    const token = request.cookies.get("token")?.value;
+  if (
+    pathname.startsWith("/admin/login") ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/favicon")
+  ) {
+    return NextResponse.next();
+  }
 
-    // If you use localStorage for token, you can't access it here (middleware runs on server)
-    // So, for localStorage-based auth, you must use client-side checks instead.
+  // ✅ Protect /admin/* and /api/admin/*
+  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+    try {
+      const token = request.cookies.get("token")?.value;
+      if (!token) throw new Error("No token found");
 
-    if (!token) {
-      // Redirect to login page
-      const loginUrl = new URL("/login", request.url);
-      return NextResponse.redirect(loginUrl);
+      const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+      const { payload } = await jwtVerify(token, secret);
+
+      if (payload.role !== "ADMIN") throw new Error("Insufficient permissions");
+
+      return NextResponse.next();
+    } catch (error) {
+      console.error("❌ Middleware error:", error.message);
+
+      // If it's an API call, return JSON error instead of redirect
+      if (pathname.startsWith("/api")) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
+      // If it's a page, redirect to admin login
+      return NextResponse.redirect(new URL("/admin/login", request.url));
     }
   }
 
-  // Allow request to proceed
   return NextResponse.next();
 }
 
-// Apply middleware only to these routes
+// ✅ Apply only to admin pages & admin APIs
 export const config = {
-  matcher: ["/profile", "(auth)/cart", "/purchase-history", "/transaction-history"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };
