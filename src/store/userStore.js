@@ -1,21 +1,20 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { getUser } from "@/app/api/user";
-import jwt from "jsonwebtoken"; // already installed
 
-// Decode JWT without verifying signature (safe for client use)
 function decodeToken(token) {
   try {
-    const decoded = jwt.decode(token); // { id, email, role, iat, exp }
-
-    if (!decoded) return null;
-
-    const now = Date.now() / 1000; // seconds
-    if (decoded.exp && decoded.exp < now) {
-      return { expired: true, ...decoded };
+    function fromBase64(str) {
+      if (typeof atob !== "undefined") {
+        return atob(str);
+      } else if (typeof Buffer !== "undefined") {
+        return Buffer.from(str, "base64").toString("utf-8");
+      }
+      throw new Error("No base64 decoding available");
     }
-
-    return { expired: false, ...decoded };
+    const decoded = fromBase64(token);
+    const [id, email] = decoded.split(":");
+    return id && email ? { id, email } : null;
   } catch {
     return null;
   }
@@ -32,7 +31,7 @@ export const useUserStore = create(
       balance: 0,
       hasHydrated: false,
 
-      // Fetch user with JWT check
+      // Enhanced fetchUser with better error handling
       fetchUser: async () => {
         if (get().loading) return;
 
@@ -55,24 +54,22 @@ export const useUserStore = create(
             return;
           }
 
-          if (decoded.expired) {
-            set({ tokenExpired: true, user: null });
-            localStorage.removeItem("token"); // cleanup expired token
-            return;
-          }
-
-          const u = await getUser();
+          const u = await getUser({ id: decoded.id, email: decoded.email });
 
           if (!u) {
             set({ error: "User not found", user: null });
             return;
           }
 
-          // Normalize user object
+          // ENSURE USER HAS _id FIELD
+          if (!u._id && !u.id) {
+            throw new Error("User object missing ID");
+          }
+
           set({
             user: {
               ...u,
-              _id: u._id || u.id,
+              _id: u._id || u.id, // Normalize to _id
             },
             userRole: u.role,
             balance: parseFloat(u.balance?.$numberDecimal || 0),
@@ -84,7 +81,7 @@ export const useUserStore = create(
         }
       },
 
-      // Normalize user when setting manually
+      // Normalize user object when setting
       setUser: (user) =>
         set({
           user: {
@@ -118,11 +115,11 @@ export const useUserStore = create(
   )
 );
 
-// Ensure user is loaded
+// Helper function to ensure user is loaded
 export const ensureUserLoaded = async () => {
   const state = useUserStore.getState();
   if (!state.user && !state.loading) {
-    await state.fetchUser(true); // force fetch
+    await state.fetchUser(true); // Force fetch
   }
   return useUserStore.getState().user;
 };

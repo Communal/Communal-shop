@@ -1,5 +1,5 @@
-import connectDB  from "@/config/db";
-import Category from "@/db/schema/Category";
+import connectDB  from "../../../../../config/db";
+import Category from "../../../../../db/schema/Category";
 
 let categoryCache = {};
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes

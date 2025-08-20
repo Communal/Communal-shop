@@ -1,50 +1,32 @@
-// app/api/transaction-history/route.js
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 import dbConnect from "@/config/db";
 import Transaction from "@/db/schema/Transaction";
-import mongoose from "mongoose";
 
 export async function GET(req) {
+  await dbConnect();
+
+  const { searchParams } = new URL(req.url);
+  const type = searchParams.get("type");
+  const status = searchParams.get("status");
+  const description = searchParams.get("description");
+
+  const filter = {};
+
+  if (type) filter.type = type;
+  if (status) filter.status = status;
+  if (description) filter.description = description;
+
   try {
-    await dbConnect();
-
-    // 🔑 Extract JWT
-    const authHeader = req.headers.get("authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "No token provided" }, { status: 401 });
-    }
-
-    const token = authHeader.split(" ")[1];
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
-    }
-
-    const userId = decoded.id;
-    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
-      return NextResponse.json({ error: "Invalid userId" }, { status: 400 });
-    }
-
-    // 🔍 Filters from query params
-    const { searchParams } = new URL(req.url);
-    const filter = { userId: new mongoose.Types.ObjectId(userId) };
-
-    if (searchParams.get("type")) filter.type = searchParams.get("type");
-    if (searchParams.get("status")) filter.status = searchParams.get("status");
-    if (searchParams.get("description"))
-      filter.description = searchParams.get("description");
-
-    const transactions = await Transaction.find(filter).sort({ createdAt: -1 });
-
-    return NextResponse.json(transactions);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Failed to fetch transactions" },
-      { status: 500 }
-    );
+    const transactions = await Transaction.find(filter)
+      .sort({ createdAt: -1 })
+      .lean();
+    const clean = transactions.map((t) => ({
+      ...t,
+      amount: parseFloat(t.amount.toString()), // Convert Decimal128 to number
+      _id: t._id.toString(), // Convert ObjectId to string if needed
+    }));
+    return NextResponse.json(clean);
+  } catch (err) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

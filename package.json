@@ -13,8 +13,6 @@
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
-    "jose": "^6.0.12",
-    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.539.0",
     "mongoose": "^8.17.1",
     "next": "15.4.6",
