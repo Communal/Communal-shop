@@ -1,8 +1,21 @@
 // actions/auth.js
 "use server";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import connectDB from "../../config/db";
 import User from "../../db/schema/User";
+
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"; // keep in .env file
+const TOKEN_EXPIRY = "1h"; // 1 hour (you can set "7d", "30m", etc.)
+
+// Generate JWT
+function generateToken(user) {
+  return jwt.sign(
+    { id: user._id, email: user.email, role: user.role },
+    JWT_SECRET,
+    { expiresIn: TOKEN_EXPIRY }
+  );
+}
 
 // Handle Signup
 export async function handleSignup(prevState, formData) {
@@ -24,13 +37,11 @@ export async function handleSignup(prevState, formData) {
   try {
     await connectDB();
 
-    // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return { ...prevState, error: "Email already registered" };
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
@@ -42,9 +53,7 @@ export async function handleSignup(prevState, formData) {
       balance: 0,
     });
 
-    const token = Buffer.from(`${newUser._id}:${newUser.email}`).toString(
-      "base64"
-    );
+    const token = generateToken(newUser);
 
     const safeUser = {
       id: newUser._id.toString(),
@@ -99,7 +108,7 @@ export async function handleLogin(prevState, formData) {
     user.updatedAt = new Date();
     await user.save();
 
-    const token = Buffer.from(`${user._id}:${user.email}`).toString("base64");
+    const token = generateToken(user);
 
     const safeUser = {
       id: user._id.toString(),

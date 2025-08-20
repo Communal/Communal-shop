@@ -15,7 +15,7 @@ const PurchaseCard = ({ purchase }) => {
         <p className="text-l">
           {new Date(purchase.purchaseDate).toLocaleDateString()}
         </p>
-        <Button className="bg-foreground text-l">Click here to view Product</Button>
+        <Button className="bg-foreground px-2 text-l">Click here to view Product</Button>
       </div>
     </div>
   );
